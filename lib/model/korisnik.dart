@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:skolarac/model/ucesnik.dart';
 
 class Korisnik extends ChangeNotifier {
   String _ime = "Nepoznato ime";
@@ -26,4 +27,12 @@ class Korisnik extends ChangeNotifier {
       "poeni": 0
     };
   }
-}
+
+  Igrac toIgrac() {
+    return Igrac(
+      ime: _ime,
+      avatar: _avatar,
+      poeni: 0
+    );
+  }
+ }

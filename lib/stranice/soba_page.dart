@@ -4,8 +4,11 @@ import 'package:skolarac/backend.dart';
 import 'package:skolarac/model/pitanje.dart';
 import 'package:skolarac/model/soba.dart';
 
+
 class SobaPage extends StatefulWidget {
-  const SobaPage({super.key});
+  final bool novaIgra;
+
+  const SobaPage({super.key, this.novaIgra = false});
 
   @override
   State<SobaPage> createState() => _SobaPageState();
@@ -13,6 +16,7 @@ class SobaPage extends StatefulWidget {
 
 class _SobaPageState extends State<SobaPage> with TickerProviderStateMixin {
   int? odabir;
+  String? prosloStanje;
 
   late AnimationController controller = AnimationController(
     duration: const Duration(seconds: 1),
@@ -23,6 +27,14 @@ class _SobaPageState extends State<SobaPage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     Soba soba = Provider.of<Soba>(context);
     progress(soba);
+
+    if(prosloStanje == "otkrij" && soba.stanje == "pitanje") {
+      odabir = null;
+    }
+
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) => prosloStanje = soba.stanje);
+
     return Scaffold(
         appBar: AppBar(
           title: Text("Soba"),
@@ -37,17 +49,22 @@ class _SobaPageState extends State<SobaPage> with TickerProviderStateMixin {
                     semanticsLabel: 'Linear progress indicator',
                   );
                 }),
+            if(widget.novaIgra && soba.stanje == "cekanje") Text("Kod sobe: ${soba.kod}"),
+            if(widget.novaIgra && soba.stanje == "cekanje") TextButton(onPressed: () {
+              Backend().instance.kreniIgru(soba);
+            }, child: Text("Započni igru")),
             buildSobu(soba)
           ],
         ));
+
   }
-  String? prosloStanje;
 
   void progress(Soba soba) async {
-    int vrijeme;
-    if(soba.stanje != prosloStanje && soba.stanje != "cekanje" && soba.stanje != "zavrseno") {
-      await controller.animateTo(1.0,
-          duration: Duration(milliseconds: 100));
+
+    if (soba.stanje != prosloStanje &&
+        soba.stanje != "cekanje" &&
+        soba.stanje != "zavrseno") {
+      await controller.animateTo(1.0, duration: Duration(milliseconds: 100));
     }
     switch (soba.stanje) {
       case "cekanje":
@@ -68,7 +85,6 @@ class _SobaPageState extends State<SobaPage> with TickerProviderStateMixin {
       default:
         controller.animateTo(0);
     }
-    prosloStanje = soba.stanje;
   }
 
   Widget buildSobu(Soba soba) {
@@ -90,17 +106,22 @@ class _SobaPageState extends State<SobaPage> with TickerProviderStateMixin {
     return Column(
       children: [
         Text("Završeno"),
-        ...soba.igraci.map((ucesnik) => ListTile(
-              title: Text(ucesnik.ime),
-              subtitle: Text(ucesnik.poeni.toString()),
+        ...soba.igraci.map((igrac) => ListTile(
+              title: Text(igrac.ime),
+              subtitle: Text(igrac.poeni.toString()),
             ))
       ],
     );
   }
 
   buildCekanje(Soba soba) {
-    return Center(
-      child: Text("Čekanje na igrače"),
+    return Column(
+      children: [
+        ...soba.igraci.map((igrac) => ListTile(
+              leading: Image.asset("assets/avatari/${igrac.avatar}.png"),
+              title: Text(igrac.ime),
+            ))
+      ],
     );
   }
 
@@ -155,7 +176,7 @@ class _SobaPageState extends State<SobaPage> with TickerProviderStateMixin {
           onTap: () {
             setState(() {
               odabir = 3;
-              Backend().instance.odaberiOdgovor( soba, 3);
+              Backend().instance.odaberiOdgovor(soba, 3);
             });
           },
         ),

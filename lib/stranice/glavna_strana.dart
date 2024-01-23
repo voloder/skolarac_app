@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:skolarac/backend.dart';
 import 'package:skolarac/model/korisnik.dart';
+import 'package:skolarac/stranice/novaigra.dart';
 import 'package:skolarac/stranice/pridruzise.dart';
 import 'package:skolarac/stranice/soba_page.dart';
 
@@ -21,36 +22,42 @@ class _GlavnaStranaState extends State<GlavnaStrana> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Spacer(),
-        Container(
-          margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          height: 140,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Color(0xFF92E3A9),
-                  Color(0xFF2B8854),
-                ],
-              )),
-          child: Stack(
-            children: [
-              Positioned(
-                top: 10,
-                left: 25,
-                child: Text("NOVA IGRA",
-                    style: TextStyle(
-                        fontSize: 40,
-                        fontFamily: "RoadRage",
-                        color: Colors.white)),
-              ),
-              Positioned(
-                  right: 40,
+        GestureDetector(
+          onTap: () {
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => const NovaIgra()));
+          },
+          child: Container(
+            margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            height: 140,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Color(0xFF92E3A9),
+                    Color(0xFF2B8854),
+                  ],
+                )),
+            child: Stack(
+              children: [
+                Positioned(
                   top: 10,
-                  bottom: 10,
-                  child: Image.asset("assets/slike/novaigra.png"))
-            ],
+                  left: 25,
+                  child: Text("NOVA IGRA",
+                      style: TextStyle(
+                          fontSize: 40,
+                          fontFamily: "RoadRage",
+                          color: Colors.white)),
+                ),
+                Positioned(
+                    right: 40,
+                    top: 10,
+                    bottom: 10,
+                    child: Image.asset("assets/slike/novaigra.png"))
+              ],
+            ),
           ),
         ),
         GestureDetector(

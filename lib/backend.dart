@@ -9,8 +9,8 @@ import 'package:http/http.dart' as http;
 import 'package:socket_io_client/socket_io_client.dart';
 
 class Backend {
-  static String host = "localhost:8000";
-  static String socketUrl = "http://localhost:8000/";
+  static String host = "xudev.io:8000";
+  static String socketUrl = "http://xudev.io:8000/";
 
   static Backend? _instance;
 
@@ -34,7 +34,7 @@ class Backend {
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8',
             },
-            body: jsonEncode(korisnik.toJson()));
+            body: jsonEncode(korisnik.toIgrac().toJson()));
 
     if (resp.statusCode != 200) {
       throw Exception("Greška pri ulasku u sobu, provjerite kôd");
@@ -47,14 +47,14 @@ class Backend {
     return soba;
   }
 
-  void poveziSe(Soba soba) {
+  void poveziSe(Soba soba, [VoidCallback? onConnect]) {
     socket = IO.io(socketUrl, OptionBuilder()
         .setTransports(['websocket']).build());
 
     socket.connect();
 
-    socket.onConnect((_) {
-      socket.emit('msg', 'test');
+    socket.onConnect((data) {
+      onConnect?.call();
     });
 
     socket.on(
@@ -68,5 +68,38 @@ class Backend {
 
   void odaberiOdgovor(Soba soba, int odgovor) {
     socket.emit("odabir_${soba.kod}", {"odgovor": odgovor, "igrac": korisnik.toJson()});
+  }
+
+  Future<Soba> kreirajSobu(BuildContext context) async {
+    korisnik = Provider.of<Korisnik>(context, listen: false);
+
+    Map<String, dynamic> parametri = {
+    };
+
+    http.Response resp = await http.get(Uri.http(host, "sobe/kreiraj/", parametri));
+
+    if (resp.statusCode != 200) {
+      throw Exception("Greška pri kreiranju sobe");
+    }
+    final kod = resp.body.replaceAll('"', '');
+
+    Soba soba = Soba(kod: kod, igraci: [korisnik.toIgrac()]);
+
+    await udjiUSobu(context, kod);
+    poveziSe(soba);
+
+    return soba;
+  }
+
+  Future<void> kreniIgru(Soba soba) async {
+    Map<String, dynamic> parametri = {
+      "kod": soba.kod
+    };
+
+    http.Response resp = await http.post(Uri.http(host, "sobe/zapocni/", parametri));
+
+    if (resp.statusCode != 200) {
+      throw Exception("Greška pri kretanju");
+    }
   }
 }
