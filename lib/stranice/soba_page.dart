@@ -115,11 +115,21 @@ class _SobaPageState extends State<SobaPage> with TickerProviderStateMixin {
   }
 
   buildZavrseno() {
+
+    soba.igraci.sort((a, b) => a.poeni.compareTo(b.poeni));
+
     return ListView(
       children: [
         Text("Završeno", textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline1,),
         ...soba.igraci.map((igrac) => ListTile(
-          leading: Image.asset("assets/avatari/${igrac.avatar}.png"),
+          leading: Stack(
+            children: [
+              Image.asset("assets/avatari/${igrac.avatar}.png"),
+           if(igrac == soba.igraci[0] && igrac.poeni != 0) Transform.translate(
+                  offset: Offset(-7, -28),
+                  child: Image.asset("assets/slike/kruna.png")),
+            ],
+          ),
               title: Text(igrac.ime, style: Theme.of(context).textTheme.headline4),
               subtitle: Text("${igrac.poeni} BODOVA", style: TextStyle(color: igrac.poeni > 0 ? Colors.green : Colors.red, fontSize: 20))),
             )
@@ -166,18 +176,23 @@ class _SobaPageState extends State<SobaPage> with TickerProviderStateMixin {
           transform: (Matrix4.identity()..scale(odabir == index ? 1.08 : 1.0)),
           transformAlignment: FractionalOffset.center,
           child: ListTile(
+            dense: true,
+            visualDensity: VisualDensity(vertical: 2),
             contentPadding: EdgeInsets.all(10),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),
             textColor: otkrij && pitanje.tacan == "abcd"[index] ? Colors.green : null,
             tileColor: [Color(0xFF1D2D60), Color(0xFFF65E5D), Color(0xFFFFBC47), Color(0xFF40CEE2)][index],
-            leading: CircleAvatar(
-              radius: 30,
-              backgroundColor: Color(0xFF31A062),
-              child: Text("ABCD"[index], style: TextStyle(color: Colors.white, fontSize: 30)),
+            leading: SizedBox(
+              child: CircleAvatar(
+                radius: 30,
+                backgroundColor: Color(0xFF31A062),
+                child: Text("ABCD"[index], style: TextStyle(color: Colors.white, fontSize: 35)),
+              ),
             ),
-            title: Text([pitanje.a, pitanje.b, pitanje.c, pitanje.d][index], style: TextStyle(fontSize: 30, color: Colors.white),),
+            title: FittedBox(fit: BoxFit.scaleDown, alignment: Alignment.centerLeft,
+                child: Text([pitanje.a, pitanje.b, pitanje.c, pitanje.d][index], style: TextStyle(fontSize: 30, color: Colors.white))),
             onTap: () {
               if(soba.stanje != "pitanje") return;
               setState(() {
