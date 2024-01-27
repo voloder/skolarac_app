@@ -9,8 +9,11 @@ import 'package:http/http.dart' as http;
 import 'package:socket_io_client/socket_io_client.dart';
 
 class Backend {
-  static String host = "xudev.io:8000";
-  static String socketUrl = "http://xudev.io:8000/";
+  static String host = "localhost:8000";
+  static String socketUrl = "http://localhost:8000/";
+
+  //static String host = "xudev.io:8000";
+  //static String socketUrl = "http://xudev.io:8000/";
 
   static Backend? _instance;
 
@@ -66,11 +69,11 @@ class Backend {
             });
   }
 
-  void odaberiOdgovor(Soba soba, int odgovor) {
+  void posaljiOdabir(Soba soba, int odgovor) {
     socket.emit("odabir_${soba.kod}", {"odgovor": odgovor, "igrac": korisnik.toJson()});
   }
 
-  Future<Soba> kreirajSobu(BuildContext context) async {
+  Future<Soba> kreirajSobu(BuildContext context, opcije) async {
     korisnik = Provider.of<Korisnik>(context, listen: false);
 
     Map<String, dynamic> parametri = {
@@ -101,5 +104,24 @@ class Backend {
     if (resp.statusCode != 200) {
       throw Exception("Greška pri kretanju");
     }
+  }
+
+  Future<void> napustiSobu(Soba soba) async {
+    socket.disconnect();
+    await http.post(Uri.http(host, "sobe/napusti/"),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(korisnik.toIgrac().toJson()));
+  }
+
+  Future<Map<String, dynamic>> ucitajKategorije() async {
+    http.Response resp = await http.get(Uri.http(host, "kategorije"));
+
+    if (resp.statusCode != 200) {
+      throw Exception("Greška pri ucitavanju kategorija");
+    }
+
+    return jsonDecode(utf8.decode(resp.bodyBytes));
   }
 }

@@ -19,9 +19,24 @@ class MyApp extends StatelessWidget {
         ],
         child: MaterialApp(
           title: 'Mobilni školarac',
+
           theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFF31a062), primary: Color(0xFF31a062)),
+            colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFF31a062), primary: Color(0xFF31a062), background: Colors.white),
+            fontFamily: "RoadRage",
+            fontFamilyFallback: ["Oswald"],
             useMaterial3: true,
+            textTheme: TextTheme(
+              displayLarge: const TextStyle(
+                fontSize: 72,
+              ),
+              // ···
+              titleLarge: const TextStyle(
+                fontSize: 36,
+              ),
+              bodyMedium: const TextStyle(
+                fontSize: 36,
+              ),
+            ),
           ),
           home: HomePage(),
         ));

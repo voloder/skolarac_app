@@ -11,6 +11,8 @@ class Soba extends ChangeNotifier {
   Pitanje? pitanje;
   int vrijemePitanja = 10;
   int vrijemeOtkrivanja = 5;
+  int brojPitanja = 10;
+  int trenutnoPitanje = 0;
 
   Soba({required this.igraci, required this.kod});
 
@@ -29,6 +31,8 @@ class Soba extends ChangeNotifier {
     pitanje = json["pitanje"] != null ? Pitanje.fromJson(json["pitanje"]) : null;
     vrijemePitanja = json["vrijeme_pitanja"];
     vrijemeOtkrivanja = json["vrijeme_otkrivanja"];
+    brojPitanja = json["broj_pitanja"];
+    trenutnoPitanje = json["trenutno_pitanje"];
     notifyListeners();
   }
 

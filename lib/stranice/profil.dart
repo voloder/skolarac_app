@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:skolarac/dialozi/jezik_dialog.dart';
 import 'package:skolarac/model/korisnik.dart';
 import 'package:skolarac/stranice/uredi_profil.dart';
 
@@ -22,15 +23,19 @@ class _ProfilePageState extends State<ProfilePage> {
         children: [
           Spacer(flex: 2),
           Hero(
-            tag: korisnik.avatar,
+            tag: "profil",
             child: Image.asset(
               "assets/avatari/${korisnik.avatar}.png",
               height: 120,
             ),
           ),
-          Text(
-            korisnik.ime,
-            style: TextStyle(fontSize: 40, fontFamily: "RoadRage"),
+          Hero(
+            tag: korisnik.ime,
+            child: Text(
+              overflow: TextOverflow.ellipsis,
+              korisnik.ime,
+              style: Theme.of(context).textTheme.headline6,
+            ),
           ),
           Spacer(),
           Padding(
@@ -76,7 +81,10 @@ class _ProfilePageState extends State<ProfilePage> {
                 ],
               ),
               child: ListTile(
-                  onTap: () {},
+                  onTap: () {
+                    showDialog(
+                        context: context, builder: (context) => JezikDialog());
+                  },
                   title: Text('JEZIK',
                       style: TextStyle(fontSize: 25, fontFamily: "RoadRage")),
                   leading: Icon(Icons.language_rounded),
