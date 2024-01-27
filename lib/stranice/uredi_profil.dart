@@ -33,15 +33,14 @@ class _UrediProfilState extends State<UrediProfil> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-Spacer(),
- Hero(
-              tag: "profil",
-              child: Image.asset(
-                "assets/avatari/${korisnik.avatar}.png",
-                height: 150,
-              ),
+          Spacer(),
+          Hero(
+            tag: "profil",
+            child: Image.asset(
+              "assets/avatari/${korisnik.avatar}.png",
+              height: 150,
             ),
-
+          ),
           Hero(
             tag: korisnik.ime,
             child: Text(
@@ -49,7 +48,6 @@ Spacer(),
               style: Theme.of(context).textTheme.headline6!,
             ),
           ),
-
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
             child: TextField(
@@ -63,7 +61,11 @@ Spacer(),
             ),
           ),
           Spacer(),
-          Text("AVATAR", style: TextStyle(fontSize: 25), textAlign: TextAlign.start,),
+          Text(
+            "AVATAR",
+            style: TextStyle(fontSize: 25),
+            textAlign: TextAlign.start,
+          ),
           DefaultTabController(
             length: 2,
             child: Column(
@@ -81,35 +83,35 @@ Spacer(),
                 ),
                 SizedBox(
                   height: 60,
-                  child: TabBarView(children: List.generate(2, (spol) {
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: List.generate(4, (index) {
-                          index = index + spol * 4 + 1;
-                          return GestureDetector(
-                            onTap: () {
-                              korisnik.avatar = index;
-                            },
-                            child: Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                Opacity(
-                                  opacity: korisnik.avatar == index ? 1 : 0.5,
-                                  child: Image.asset(
+                  child: TabBarView(
+                    children: List.generate(2, (spol) {
+                      return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: List.generate(5, (index) {
+                            index = index + spol * 5 + 1;
+                            return GestureDetector(
+                              onTap: () {
+                                korisnik.avatar = index;
+                              },
+                              child: Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  Opacity(
+                                    opacity: korisnik.avatar == index ? 1 : 0.5,
+                                    child: Image.asset(
                                         "assets/avatari/${index}.png"),
-
-                                ),
-                                if (korisnik.avatar == index)
-                                  Icon(
-                                    Icons.check,
-                                    color: Colors.white,
-                                    size: 40,
-                                  )
-                              ],
-                            ),
-                          );
-                        })
-                    );}),
+                                  ),
+                                  if (korisnik.avatar == index)
+                                    Icon(
+                                      Icons.check,
+                                      color: Colors.white,
+                                      size: 40,
+                                    )
+                                ],
+                              ),
+                            );
+                          }));
+                    }),
                   ),
                 )
               ],
@@ -155,7 +157,7 @@ Spacer(),
           ),*/
           Expanded(
             flex: 12,
-              child: Image.asset("assets/slike/profil.png"),
+            child: Image.asset("assets/slike/profil.png"),
           ),
         ],
       ),

@@ -25,13 +25,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     return FutureBuilder(
         future: korisnik.getPrefs(),
         builder: (context, snapshot) {
-
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Material(
                 child: Center(
-                  child: CircularProgressIndicator(),
-                )
-            );
+              child: CircularProgressIndicator(),
+            ));
           }
 
           if (!korisnik.sacuvan()) {
@@ -41,9 +39,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             });
             return Material(
                 child: Center(
-                  child: CircularProgressIndicator(),
-                )
-            );
+              child: CircularProgressIndicator(),
+            ));
           }
 
           return Scaffold(
@@ -64,5 +61,24 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 ],
               ));
         });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    precacheImage(AssetImage("assets/slike/animacija.gif"), context);
+    precacheImage(AssetImage("assets/slike/education.png"), context);
+    precacheImage(AssetImage("assets/slike/kruna.png"), context);
+    precacheImage(AssetImage("assets/slike/novaigra.png"), context);
+    precacheImage(AssetImage("assets/slike/postavke.png"), context);
+    precacheImage(AssetImage("assets/slike/pridruzise.png"), context);
+    precacheImage(AssetImage("assets/slike/profil.png"), context);
+    precacheImage(AssetImage("assets/slike/quiztime.png"), context);
+
+    for (int i = 1; i <= 10; i++) {
+      precacheImage(AssetImage("assets/avatari/$i.png"), context);
+    }
+
   }
 }

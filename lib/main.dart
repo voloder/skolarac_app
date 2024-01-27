@@ -19,7 +19,6 @@ class MyApp extends StatelessWidget {
         ],
         child: MaterialApp(
           title: 'Mobilni školarac',
-
           theme: ThemeData(
             colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFF31a062), primary: Color(0xFF31a062), background: Colors.white),
             fontFamily: "RoadRage",
@@ -40,5 +39,8 @@ class MyApp extends StatelessWidget {
           ),
           home: HomePage(),
         ));
+
   }
+
+
 }
