@@ -3,22 +3,24 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:skolarac/model/korisnik.dart';
+import 'package:skolarac/model/postavke_sobe.dart';
 import 'package:skolarac/model/soba.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:http/http.dart' as http;
 import 'package:socket_io_client/socket_io_client.dart';
 
 class Backend {
-  static String host = "localhost:8000";
-  static String socketUrl = "http://localhost:8000/";
+  //static String host = "localhost:8000";
+  //static String socketUrl = "http://localhost:8000/";
 
-  //static String host = "xudev.io:8000";
-  //static String socketUrl = "http://xudev.io:8000/";
+  static String host = "xudev.io:8000";
+  static String socketUrl = "http://xudev.io:8000/";
 
   static Backend? _instance;
 
   late IO.Socket socket;
   late Korisnik korisnik;
+  Map<String, dynamic>? kategorije;
 
   Backend get instance {
     _instance ??= Backend();
@@ -73,13 +75,14 @@ class Backend {
     socket.emit("odabir_${soba.kod}", {"odgovor": odgovor, "igrac": korisnik.toJson()});
   }
 
-  Future<Soba> kreirajSobu(BuildContext context, opcije) async {
+  Future<Soba> kreirajSobu(BuildContext context, SobaPostavke postavke) async {
     korisnik = Provider.of<Korisnik>(context, listen: false);
-
-    Map<String, dynamic> parametri = {
-    };
-
-    http.Response resp = await http.get(Uri.http(host, "sobe/kreiraj/", parametri));
+    print(jsonEncode(postavke.toJson(),));
+    http.Response resp = await http.post(Uri.http(host, "sobe/kreiraj/"),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(postavke.toJson(),));
 
     if (resp.statusCode != 200) {
       throw Exception("Greška pri kreiranju sobe");
@@ -116,12 +119,17 @@ class Backend {
   }
 
   Future<Map<String, dynamic>> ucitajKategorije() async {
-    http.Response resp = await http.get(Uri.http(host, "kategorije"));
 
-    if (resp.statusCode != 200) {
-      throw Exception("Greška pri ucitavanju kategorija");
+    if(kategorije == null) {
+      http.Response resp = await http.get(Uri.http(host, "kategorije/"));
+
+      if (resp.statusCode != 200) {
+        throw Exception("Greška pri ucitavanju kategorija");
+      }
+      kategorije = jsonDecode(utf8.decode(resp.bodyBytes));
+
     }
 
-    return jsonDecode(utf8.decode(resp.bodyBytes));
+    return kategorije!;
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:skolarac/model/korisnik.dart';
 import 'package:skolarac/model/pitanje.dart';
+import 'package:skolarac/model/postavke_sobe.dart';
 import 'package:skolarac/model/ucesnik.dart';
 
 class Soba extends ChangeNotifier {
@@ -9,10 +10,9 @@ class Soba extends ChangeNotifier {
   int countdown = 0;
   String stanje = "cekanje";
   Pitanje? pitanje;
-  int vrijemePitanja = 10;
-  int vrijemeOtkrivanja = 5;
-  int brojPitanja = 10;
   int trenutnoPitanje = 0;
+
+  SobaPostavke postavke = SobaPostavke();
 
   Soba({required this.igraci, required this.kod});
 
@@ -29,9 +29,7 @@ class Soba extends ChangeNotifier {
     countdown = json["countdown"];
     stanje = json["stanje"];
     pitanje = json["pitanje"] != null ? Pitanje.fromJson(json["pitanje"]) : null;
-    vrijemePitanja = json["vrijeme_pitanja"];
-    vrijemeOtkrivanja = json["vrijeme_otkrivanja"];
-    brojPitanja = json["broj_pitanja"];
+    postavke = SobaPostavke.fromJson(json["postavke"]);
     trenutnoPitanje = json["trenutno_pitanje"];
     notifyListeners();
   }

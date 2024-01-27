@@ -86,11 +86,11 @@ class _SobaPageState extends State<SobaPage> with TickerProviderStateMixin {
             duration: Duration(seconds: 1));
         break;
       case "pitanje":
-        controller.animateTo((soba.countdown - 1) / soba.vrijemePitanja,
+        controller.animateTo((soba.countdown - 1) / soba.postavke.vrijemePitanja,
             duration: Duration(seconds: 1));
         break;
       case "otkrij":
-        controller.animateTo((soba.countdown - 1) / soba.vrijemeOtkrivanja,
+        controller.animateTo((soba.countdown - 1) / soba.postavke.vrijemeOtkrivanja,
             duration: Duration(seconds: 1));
         break;
       default:
@@ -117,7 +117,7 @@ class _SobaPageState extends State<SobaPage> with TickerProviderStateMixin {
   buildZavrseno() {
     return ListView(
       children: [
-        Text("Završeno"),
+        Text("Završeno", textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline1,),
         ...soba.igraci.map((igrac) => ListTile(
           leading: Image.asset("assets/avatari/${igrac.avatar}.png"),
               title: Text(igrac.ime, style: Theme.of(context).textTheme.headline4),
@@ -194,7 +194,7 @@ class _SobaPageState extends State<SobaPage> with TickerProviderStateMixin {
               borderRadius: BorderRadius.circular(100),
               color: Color(0xFF108688),
             ),
-            child: Text("${soba.trenutnoPitanje}/${soba.brojPitanja}", style: TextStyle(fontSize: 30, color: Colors.white)),
+            child: Text("${soba.trenutnoPitanje}/${soba.postavke.brojPitanja}", style: TextStyle(fontSize: 30, color: Colors.white)),
           ),
         ),
         Spacer(),

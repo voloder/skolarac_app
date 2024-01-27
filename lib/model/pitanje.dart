@@ -1,12 +1,14 @@
-class Pitanje {
-  final String pitanje;
-  final String a;
-  final String b;
-  final String c;
-  final String d;
-  final String tacan;
+import 'dart:convert';
 
-  const Pitanje({
+class Pitanje {
+   String pitanje;
+   String a;
+   String b;
+   String c;
+   String d;
+   String tacan;
+
+   Pitanje({
     required this.pitanje,
     required this.a,
     required this.b,
@@ -24,5 +26,16 @@ class Pitanje {
       d: json["d"],
       tacan: json["tacan"],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "pitanje": pitanje,
+      "a": a,
+      "b": b,
+      "c": c,
+      "d": d,
+      "tacan": tacan,
+    };
   }
 }
