@@ -66,6 +66,7 @@ class _UrediProfilState extends State<UrediProfil> {
           ),
           Spacer(),
           DefaultTabController(
+            initialIndex: korisnik.avatar > 5 ? 1 : 0,
             length: 2,
             child: Column(
               mainAxisSize: MainAxisSize.min,
