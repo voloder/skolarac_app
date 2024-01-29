@@ -16,7 +16,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   late final TabController _tabController =
-      TabController(length: 3, vsync: this);
+      TabController(length: 3, vsync: this, initialIndex: 1);
 
   @override
   Widget build(BuildContext context) {
@@ -45,10 +45,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
           return Scaffold(
               body: TabBarView(
+
                 controller: _tabController,
                 children: const [MenuPage(), GlavnaStrana(), ProfilePage()],
               ),
               bottomNavigationBar: TabBar(
+
                 controller: _tabController,
                 tabs: const [
                   Tab(
@@ -75,6 +77,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     precacheImage(AssetImage("assets/slike/pridruzise.png"), context);
     precacheImage(AssetImage("assets/slike/profil.png"), context);
     precacheImage(AssetImage("assets/slike/quiztime.png"), context);
+    precacheImage(AssetImage("assets/slike/banner_light.png"), context);
+    precacheImage(AssetImage("assets/slike/banner_dark.png"), context);
 
     for (int i = 1; i <= 10; i++) {
       precacheImage(AssetImage("assets/avatari/$i.png"), context);

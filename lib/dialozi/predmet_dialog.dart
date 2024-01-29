@@ -52,7 +52,7 @@ class _PredmetDialogState extends State<PredmetDialog> {
               ],
 
             ),
-            SkolaracDugme(text: "DODAJ", onPressed: () {
+            SkolaracDugme(text: "SAČUVAJ", onPressed: () {
               Navigator.of(context).pop(Predmet(naziv: naslovController.text, ocjene: tekstController.text.split("").map((e) => int.parse(e)).toList()));
             })
           ],

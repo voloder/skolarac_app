@@ -86,7 +86,7 @@ class _RasporedPageState extends State<RasporedPage> {
                                             topRight: Radius.circular(10),
                                             bottomRight: Radius.circular(10))
                                         : null,
-                                border: Border.all(color: Colors.black),
+                                border: Border.all(color: Theme.of(context).colorScheme.onBackground),
                               ),
                               child: raspored[dan][cas] != ""
                                   ? Center(

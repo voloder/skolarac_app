@@ -20,7 +20,7 @@ class BojaDialog extends StatelessWidget {
             children: [
               ListTile(
                 onTap: () {
-                  tema.boja = TemaBoja.svijetla;
+                  tema.setBoja(TemaBoja.svijetla);
                   Navigator.of(context).pop();
                 },
                 leading: Icon(
@@ -35,7 +35,7 @@ class BojaDialog extends StatelessWidget {
               ),
               ListTile(
                 onTap: () {
-                  tema.boja = TemaBoja.tamna;
+                  tema.setBoja(TemaBoja.tamna);
                   Navigator.of(context).pop();
                 },
                 leading: Icon(Icons.dark_mode, size: 40),
@@ -45,7 +45,7 @@ class BojaDialog extends StatelessWidget {
               ),
               ListTile(
                 onTap: () {
-                  tema.boja = TemaBoja.auto;
+                  tema.setBoja(TemaBoja.auto) ;
                   Navigator.of(context).pop();
                 },
                 leading: Icon(Icons.brightness_medium_outlined, size: 40),

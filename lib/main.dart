@@ -4,14 +4,24 @@ import 'package:skolarac/model/korisnik.dart';
 import 'package:skolarac/model/tema.dart';
 import 'package:skolarac/stranice/home.dart';
 
-void main() {
+/*
+
+Kod radio: Admir Voloder
+
+Nastaviti dalje uz naročitu opreznost
+
+ */
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Tema.init();
+
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -24,9 +34,8 @@ class MyApp extends StatelessWidget {
             title: 'Mobilni školarac',
             theme: ThemeData(
               colorScheme: Provider.of<Tema>(context).getColorScheme(),
-
               fontFamily: "RoadRage",
-              fontFamilyFallback: ["Oswald"],
+              fontFamilyFallback: ["Oswald"], // cirilica fallback font
               useMaterial3: true,
               textTheme: TextTheme(
                 displayLarge: const TextStyle(

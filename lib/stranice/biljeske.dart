@@ -15,7 +15,15 @@ class _BiljeskeState extends State<Biljeske> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Bilješke"),
+        leading: GestureDetector(
+            onTap: () {
+              Navigator.of(context).pop();
+            },
+            child: Icon(
+              Icons.chevron_left,
+              size: 40,
+            )),
+        backgroundColor: Theme.of(context).colorScheme.background,
       ),
       body: FutureBuilder(
           future: ucitajBiljeske(),
@@ -27,8 +35,8 @@ class _BiljeskeState extends State<Biljeske> {
 
             List<Biljeska> biljeske = snapshot.data as List<Biljeska>;
 
-            return Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+            return ListView(
+
                 children: [
                   GestureDetector(
                     onTap: () async {

@@ -22,108 +22,123 @@ class _NovaIgraState extends State<NovaIgra> {
 
     return Scaffold(
         appBar: AppBar(
+          leading: GestureDetector(
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: Icon(
+                Icons.chevron_left,
+                size: 40,
+              )),
           title: Hero(
             tag: "novaigra_naslov",
             child: Text("NOVA IGRA",
                 style: Theme.of(context).textTheme.headline6!),
           ),
         ),
-        body: ListView(
-          //crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            SkolaracDugme(
-              onPressed: () {
-                Backend().instance.kreirajSobu(context).then((s) {
-                  // provider za sobu, tako da kada dodje do socket eventa, da se
-                  // widget tree rebuilduje i da se prikaze novo stanje sobe
-                  Navigator.push(
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ListView(
+            //crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              SkolaracDugme(
+                onPressed: () {
+                  if(postavke.kategorije.isEmpty) return;
+                  Backend().instance.kreirajSobu(context).then((s) {
+                    // provider za sobu, tako da kada dodje do socket eventa, da se
+                    // widget tree rebuilduje i da se prikaze novo stanje sobe
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ChangeNotifierProvider(
+                                  create: (context) => s,
+                                  child: SobaPage(
+                                    novaIgra: true,
+                                    postakve: postavke,
+                                  ),
+                                )));
+                  });
+                },
+                text: "KREIRAJ KVIZ",
+              ),
+              Divider(),
+              Text(
+                "KATEGORIJE",
+                textAlign: TextAlign.center,
+              ),
+
+              if(postavke.kategorije.isEmpty) Text("Odaberite bar jednu kategoriju", style: TextStyle(color: Colors.redAccent, fontSize: 20), textAlign: TextAlign.center,),
+
+              FutureBuilder(
+                  future: Backend().instance.ucitajKategorije(),
+                  builder: (context, snapshot) {
+                    if(snapshot.hasError) {
+                      return Center(child: Text(snapshot.error.toString()));
+                    }
+                    if (!snapshot.hasData) {
+                      return Center(child: CircularProgressIndicator());
+                    }
+
+                    final kategorije = snapshot.data!["kategorije"];
+
+                    return buildKategorije([
+                      ...kategorije,
+                      {
+                        "naziv": "Custom Pitanja",
+                        "potkategorije": [
+                          {
+                            "naziv": "Custom Pitanja",
+                            "broj": postavke.customPitanja.length
+                          }
+                        ]
+                      }
+                    ]);
+                  }),
+
+              Divider(),
+              Text(
+                "Vrijeme pitanja: ${postavke.vrijemePitanja}s",
+                textAlign: TextAlign.center,
+              ),
+              Slider(
+                value: postavke.vrijemePitanja.toDouble(),
+                max: 60,
+                min: 5,
+                divisions: 11,
+                label: postavke.vrijemePitanja.toString(),
+                onChanged: (double value) {
+                  setState(() {
+                    postavke.vrijemePitanja = value.toInt();
+                  });
+                },
+              ),
+              Divider(),
+              Text(
+                "Vrijeme otkrivanja: ${postavke.vrijemeOtkrivanja}s",
+                textAlign: TextAlign.center,
+              ),
+              Slider(
+                value: postavke.vrijemeOtkrivanja.toDouble(),
+                max: 10,
+                min: 1,
+                divisions: 9,
+                label: postavke.vrijemeOtkrivanja.toString(),
+                onChanged: (double value) {
+                  setState(() {
+                    postavke.vrijemeOtkrivanja = value.toInt();
+                  });
+                },
+              ),
+              SkolaracDugme(
+                  text: "CUSTOM PITANJA",
+                  onPressed: () => Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => ChangeNotifierProvider(
-                                create: (context) => s,
-                                child: SobaPage(
-                                  novaIgra: true,
-                                  postakve: postavke,
-                                ),
-                              )));
-                });
-              },
-              text: "KREIRAJ KVIZ",
-            ),
-            Divider(),
-            Text(
-              "KATEGORIJE",
-              textAlign: TextAlign.center,
-            ),
-            FutureBuilder(
-                future: Backend().instance.ucitajKategorije(),
-                builder: (context, snapshot) {
-                  if(snapshot.hasError) {
-                    return Center(child: Text(snapshot.error.toString()));
-                  }
-                  if (!snapshot.hasData) {
-                    return Center(child: CircularProgressIndicator());
-                  }
-
-                  final kategorije = snapshot.data!["kategorije"];
-
-                  return buildKategorije([
-                    ...kategorije,
-                    {
-                      "naziv": "Custom Pitanja",
-                      "potkategorije": [
-                        {
-                          "naziv": "Custom Pitanja",
-                          "broj": postavke.customPitanja.length
-                        }
-                      ]
-                    }
-                  ]);
-                }),
-
-            Divider(),
-            Text(
-              "Vrijeme pitanja: ${postavke.vrijemePitanja}s",
-              textAlign: TextAlign.center,
-            ),
-            Slider(
-              value: postavke.vrijemePitanja.toDouble(),
-              max: 60,
-              min: 5,
-              divisions: 11,
-              label: postavke.vrijemePitanja.toString(),
-              onChanged: (double value) {
-                setState(() {
-                  postavke.vrijemePitanja = value.toInt();
-                });
-              },
-            ),
-            Divider(),
-            Text(
-              "Vrijeme otkrivanja: ${postavke.vrijemeOtkrivanja}s",
-              textAlign: TextAlign.center,
-            ),
-            Slider(
-              value: postavke.vrijemeOtkrivanja.toDouble(),
-              max: 10,
-              min: 1,
-              divisions: 9,
-              label: postavke.vrijemeOtkrivanja.toString(),
-              onChanged: (double value) {
-                setState(() {
-                  postavke.vrijemeOtkrivanja = value.toInt();
-                });
-              },
-            ),
-            SkolaracDugme(
-                text: "CUSTOM PITANJA",
-                onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => CustomPitanja(
-                              postavke: postavke,
-                            )))),
-          ],
+                          builder: (context) => CustomPitanja(
+                                postavke: postavke,
+                              )))),
+            ],
+          ),
         ));
   }
 
@@ -170,6 +185,8 @@ class _NovaIgraState extends State<NovaIgra> {
                         });
                       },
                       style: ButtonStyle(
+                        padding: MaterialStateProperty.all<EdgeInsets>(
+                            EdgeInsets.symmetric(vertical: 2, horizontal: 15)),
                         backgroundColor: MaterialStateProperty.all<Color>(
                             postavke.kategorije.contains(potkategorija["naziv"])
                                 ? Colors.green

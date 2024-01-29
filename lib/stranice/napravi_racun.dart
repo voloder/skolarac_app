@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:skolarac/model/korisnik.dart';
+import 'package:skolarac/model/tema.dart';
 import 'package:skolarac/stranice/home.dart';
+import 'package:skolarac/widgeti/skolarac_dugme.dart';
 
 class NapraviRacun extends StatefulWidget {
   const NapraviRacun({super.key});
@@ -15,6 +18,15 @@ class _NapraviRacunState extends State<NapraviRacun> {
   String? ime;
   bool? spol;
 
+  @override
+  void initState() {
+    SchedulerBinding.instance!.addPostFrameCallback((_) {
+      Provider.of<Tema>(context, listen: false).setBoja(TemaBoja.svijetla);
+    });
+
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -84,27 +96,12 @@ class _NapraviRacunState extends State<NapraviRacun> {
               ),
             ]),
             Spacer(),
-            Padding(
-              padding: const EdgeInsets.all(40.0),
-              child: TextButton(
-                  onPressed: () {
-                    Provider.of<Korisnik>(context, listen: false).napravi(imeController.text, spol ?? true);
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()));
-                    },
-                  child: Text("DALJE"),
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(
-                        Theme.of(context).primaryColor),
-                    foregroundColor:
-                        MaterialStateProperty.all<Color>(Colors.white),
-                    textStyle: MaterialStateProperty.all<TextStyle>(Theme.of(context).textTheme.headline6!.copyWith(
+            SkolaracDugme(text: "DALJE",     onPressed: () {
+      Provider.of<Korisnik>(context, listen: false).napravi(imeController.text, spol ?? true);
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()));
+      Provider.of<Tema>(context, listen: false).setBoja(TemaBoja.auto);
+      },),
 
-                        fontSize: 35,
-                        color: Colors.white)),
-                    padding: MaterialStateProperty.all<EdgeInsets>(
-                        EdgeInsets.all(12)),
-                  )),
-            ),
             Expanded(
               flex: 12,
               child: Image.asset("assets/slike/education.png"),

@@ -17,7 +17,16 @@ class _CustomPitanjaState extends State<CustomPitanja> {
     return Scaffold(
         appBar: AppBar(
           title: Text("Custom pitanja"),
+          leading: GestureDetector(
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: Icon(
+                Icons.chevron_left,
+                size: 40,
+              )),
         ),
+
         body: ListView(padding: EdgeInsets.all(20), children: [
 Row(
   children: [

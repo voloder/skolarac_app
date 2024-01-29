@@ -54,7 +54,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ],
               ),
               child: ListTile(
-                title: Text('PROFIL',
+                title: Text("PROFIL",
                     style: TextStyle(fontSize: 25, fontFamily: "RoadRage")),
                 leading: Icon(Icons.edit_rounded),
                 onTap: () {
@@ -80,11 +80,18 @@ class _ProfilePageState extends State<ProfilePage> {
                 ],
               ),
               child: ListTile(
+                enabled: true,
                   onTap: () {
-                    showDialog(
-                        context: context, builder: (context) => JezikDialog());
+                    // nismo stigli prevesti pa smo izbacili opciju, nemojte nam zamjeriti
+
+                    /*showDialog(
+                        context: context, builder: (context) => JezikDialog());*/
+
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      content: Text("Biti će dodato u idućoj verziji!"),
+                    ));
                   },
-                  title: Text('JEZIK',
+                  title: Text("JEZIK",
                       style: TextStyle(fontSize: 25, fontFamily: "RoadRage")),
                   leading: Icon(Icons.language_rounded),),
             ),
@@ -108,7 +115,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   onTap: () {
                     showDialog(context: context, builder:(context) => BojaDialog());
                   },
-                  title: Text('BOJA',
+                  title: Text("TEMA",
                       style: TextStyle(fontSize: 25, fontFamily: "RoadRage")),
                   leading: Icon(Icons.color_lens_rounded),),
             ),

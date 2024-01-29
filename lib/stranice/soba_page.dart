@@ -52,6 +52,14 @@ class _SobaPageState extends State<SobaPage> with TickerProviderStateMixin {
     return Scaffold(
         appBar: AppBar(
           title: Text("Kviz"),
+          leading: GestureDetector(
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: Icon(
+                Icons.chevron_left,
+                size: 40,
+              )),
         ),
         body: Column(
           mainAxisSize: MainAxisSize.max,
@@ -125,7 +133,7 @@ class _SobaPageState extends State<SobaPage> with TickerProviderStateMixin {
   }
 
   buildZavrseno() {
-    soba.igraci.sort((a, b) => a.poeni.compareTo(b.poeni));
+    soba.igraci.sort((a, b) => b.poeni.compareTo(a.poeni));
 
     return ListView(
       children: [
@@ -159,11 +167,14 @@ class _SobaPageState extends State<SobaPage> with TickerProviderStateMixin {
   buildCekanje() {
     return ListView(
       children: [
-        ...soba.igraci.map((igrac) => ListTile(
-              leading: Image.asset("assets/avatari/${igrac.avatar}.png"),
-              title:
-                  Text(igrac.ime, style: Theme.of(context).textTheme.headline4),
-            )),
+        ...soba.igraci.map((igrac) => Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ListTile(
+                leading: Image.asset("assets/avatari/${igrac.avatar}.png"),
+                title:
+                    Text(igrac.ime, style: Theme.of(context).textTheme.headline4),
+              ),
+        )),
       ],
     );
   }
@@ -204,8 +215,7 @@ class _SobaPageState extends State<SobaPage> with TickerProviderStateMixin {
           padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
           foregroundDecoration: BoxDecoration(
             color: otkrij && pitanje.tacan != "abcd"[index]
-                ? Colors.white60
-                : null,
+                ? Theme.of(context).colorScheme.background.withOpacity(0.5)                : null,
           ),
           transform: (Matrix4.identity()..scale(odabir == index ? 1.08 : 1.0)),
           transformAlignment: FractionalOffset.center,

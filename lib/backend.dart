@@ -10,11 +10,12 @@ import 'package:http/http.dart' as http;
 import 'package:socket_io_client/socket_io_client.dart';
 
 class Backend {
-  static String host = "localhost:8000";
-  static String socketUrl = "http://localhost:8000/";
+  //static String host = "localhost:8000";
+  //static String socketUrl = "http://localhost:8000/";
 
-  //static String host = "xudev.io:8000";
-  //static String socketUrl = "http://xudev.io:8000/";
+  // AKO SAMI HOSTUJETE, PROMIJENITI HOST OVDJE!
+  static String host = "xudev.io:8000";
+  static String socketUrl = "http://$host/";
 
   static Backend? _instance;
 
@@ -22,6 +23,7 @@ class Backend {
   late Korisnik korisnik;
   Map<String, dynamic>? kategorije;
 
+  // singleton
   Backend get instance {
     _instance ??= Backend();
     return _instance!;
@@ -42,6 +44,7 @@ class Backend {
             body: jsonEncode(korisnik.toIgrac().toJson()));
 
     if (resp.statusCode != 200) {
+      // todo prikazi popup
       throw Exception("Greška pri ulasku u sobu, provjerite kôd");
     }
 
@@ -122,7 +125,7 @@ class Backend {
   }
 
   Future<Map<String, dynamic>> ucitajKategorije() async {
-
+    // kesiraj kategorije da ne moramo stalno ucitavati
     if(kategorije == null) {
       http.Response resp = await http.get(Uri.http(host, "kategorije/"));
 

@@ -29,7 +29,7 @@ class Soba extends ChangeNotifier {
     countdown = json["countdown"];
     stanje = json["stanje"];
     pitanje = json["pitanje"] != null ? Pitanje.fromJson(json["pitanje"]) : null;
-    postavke = SobaPostavke.fromJson(json["postavke"]);
+    if(json["postavke"] != null) postavke = SobaPostavke.fromJson(json["postavke"]);
     trenutnoPitanje = json["trenutno_pitanje"];
     notifyListeners();
   }

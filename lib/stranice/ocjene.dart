@@ -17,7 +17,15 @@ class _OcjenePageState extends State<OcjenePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Ocjene"),
+        leading: GestureDetector(
+            onTap: () {
+              Navigator.of(context).pop();
+            },
+            child: Icon(
+              Icons.chevron_left,
+              size: 40,
+            )),
+        backgroundColor: Theme.of(context).colorScheme.background,
       ),
       body: Center(
           child: FutureBuilder(
@@ -30,8 +38,16 @@ class _OcjenePageState extends State<OcjenePage> {
 
                 final predmeti = snapshot.data as List<Predmet>;
 
-                return Column(
+                return ListView(
                   children: [
+                    if(predmeti.isNotEmpty) Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(ukupanProsjek(predmeti).toStringAsFixed(2),
+                            style: TextStyle(fontSize: 70)),
+                        ),
+                    ),
+
                     GestureDetector(
                       onTap: () async {
                         final noviPredmet = await showDialog(
@@ -134,7 +150,7 @@ class _OcjenePageState extends State<OcjenePage> {
                             ),
                             Text(
                               predmet.prosjek.toStringAsFixed(2),
-                              style: TextStyle(fontSize: 70),)
+                              style: TextStyle(fontSize: 70, color: predmet.prosjek >= 2 ? Theme.of(context).colorScheme.primary : Colors.red),)
                           ],
                         ),
                       ),
@@ -160,5 +176,13 @@ class _OcjenePageState extends State<OcjenePage> {
     prefs ??= await SharedPreferences.getInstance();
 
     prefs!.setStringList("predmeti", predmeti.map((e) => e.toJson()).toList());
+  }
+
+  double ukupanProsjek(List<Predmet> predmeti) {
+    int suma = 0;
+    for (Predmet predmet in predmeti) {
+      suma += predmet.prosjek.round();
+    }
+    return suma / predmeti.length;
   }
 }

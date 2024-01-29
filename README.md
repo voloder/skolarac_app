@@ -1,16 +1,28 @@
-# skolarac
 
-Mobilni Školarac
+# Uvod
 
-## Getting Started
+U ovom projektu koristili smo Flutter 3.16.7
 
-This project is a starting point for a Flutter application.
+Od external biblioteka koristili smo:
+- lottie: ^3.0.0
+- neon_circular_timer: ^0.0.7
+- provider: ^6.1.1
+- shared_preferences: ^2.2.2
+- socket_io_client: ^2.0.3+1
 
-A few resources to get you started if this is your first Flutter project:
+## Pokretanje
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Da biste instalirali sve biblioteke, pokrenite `flutter pub get` u root direktoriju.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Za pokretanje koda, pokrenite `flutter run`.
+
+Za buildanje koda, pokrenite `flutter build apk` ili `flutter build appbundle`.
+
+## Struktura
+
+Backend singleton koji se inicijalizira na početku i koriste ga sve ostale klase
+
+Po defaultu, backend je `xudev.io:8000`. Pročitajte README.md backenda kako biste lokalno hostovali.
+
+U /model su modeli podataka, a u /stranice su stranice koje se prikazuju
+

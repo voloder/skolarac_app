@@ -1,34 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 enum TemaBoja { tamna, svijetla, auto }
 
 class Tema extends ChangeNotifier {
-  TemaBoja _boja = TemaBoja.svijetla;
+  static TemaBoja boja = TemaBoja.auto;
 
-  TemaBoja get boja => _boja;
+  static Future<void> init() async {
+    final prefs = await SharedPreferences.getInstance();
+    boja = TemaBoja.values.firstWhere(
+            (element) => element.name == (prefs.getString("tema") ?? "auto"), orElse: () => TemaBoja.auto);
+  }
 
-  set boja(TemaBoja value) {
-    _boja = value;
+  setBoja(TemaBoja value) async {
+    boja = value;
     notifyListeners();
+
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString("tema", value.name);
+  }
+
+  getBrightness() {
+    if (boja == TemaBoja.auto) {
+      return SchedulerBinding.instance.platformDispatcher.platformBrightness;
+    } else {
+      return boja == TemaBoja.tamna ? Brightness.dark : Brightness.light;
+    }
   }
 
   ColorScheme getColorScheme() {
     bool tamna = false;
 
-    if (_boja == TemaBoja.auto) {
-      tamna = SchedulerBinding.instance.platformDispatcher.platformBrightness ==
-          Brightness.dark;
-    } else {
-      tamna = _boja == TemaBoja.tamna;
-    }
+    getBrightness() == Brightness.dark ? tamna = true : tamna = false;
 
     if (tamna) {
       return ColorScheme.fromSeed(
         brightness: Brightness.dark,
         seedColor: Color(0xFF31a062),
         surfaceTint: Colors.grey,
-        primary: Colors.greenAccent,
+        primary: Color(0xFF30B074),
         onPrimary: Colors.black,
       );
     } else {

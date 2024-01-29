@@ -4,7 +4,7 @@ class Predmet {
   String naziv;
   List<int> ocjene = [];
 
-  get prosjek => ocjene.isEmpty ? 0 : ocjene.reduce((a, b) => a + b) / ocjene.length;
+  double get prosjek => ocjene.isEmpty ? 0 : ocjene.reduce((a, b) => a + b) / ocjene.length;
 
   Predmet({required this.naziv, List<int> ocjene = const []}) {
     this.ocjene = ocjene;

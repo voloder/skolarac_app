@@ -24,6 +24,14 @@ class _PridruziSeState extends State<PridruziSe> {
             child: Text("PRIDRUŽI SE",
                 style: Theme.of(context).textTheme.headline6),
           ),
+          leading: GestureDetector(
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: Icon(
+                Icons.chevron_left,
+                size: 40,
+              )),
         ),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
