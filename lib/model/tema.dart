@@ -10,7 +10,7 @@ class Tema extends ChangeNotifier {
   static Future<void> init() async {
     final prefs = await SharedPreferences.getInstance();
     boja = TemaBoja.values.firstWhere(
-            (element) => element.name == (prefs.getString("tema") ?? "auto"), orElse: () => TemaBoja.auto);
+            (element) => element.name == (prefs.getString("tema") ?? "svijetla"), orElse: () => TemaBoja.svijetla);
   }
 
   setBoja(TemaBoja value) async {

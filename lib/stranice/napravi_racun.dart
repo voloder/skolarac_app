@@ -20,11 +20,6 @@ class _NapraviRacunState extends State<NapraviRacun> {
 
   @override
   void initState() {
-    SchedulerBinding.instance!.addPostFrameCallback((_) {
-      Provider.of<Tema>(context, listen: false).setBoja(TemaBoja.svijetla);
-    });
-
-
     super.initState();
   }
 
