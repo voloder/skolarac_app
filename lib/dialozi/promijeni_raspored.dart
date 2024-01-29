@@ -32,7 +32,7 @@ class _PromijeniRasporedState extends State<PromijeniRaspored> {
                       onChanged: (value) {
                         widget.casovi[cas] = value;
                       },
-                      style: TextStyle(fontSize: 25),
+                      style: TextStyle(fontSize: 20),
                     ),
                   )
                 ],

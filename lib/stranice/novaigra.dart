@@ -67,11 +67,10 @@ class _NovaIgraState extends State<NovaIgra> {
                 textAlign: TextAlign.center,
               ),
 
-              if(postavke.kategorije.isEmpty) Text("Odaberite bar jednu kategoriju", style: TextStyle(color: Colors.redAccent, fontSize: 20), textAlign: TextAlign.center,),
-
               FutureBuilder(
                   future: Backend().instance.ucitajKategorije(),
                   builder: (context, snapshot) {
+
                     if(snapshot.hasError) {
                       return Center(child: Text(snapshot.error.toString()));
                     }
@@ -167,6 +166,8 @@ class _NovaIgraState extends State<NovaIgra> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        if(postavke.kategorije.isEmpty) Text("Odaberite bar jednu kategoriju", style: TextStyle(color: Colors.redAccent, fontSize: 20), textAlign: TextAlign.center,),
+
         for (var kategorija in kategorije) ...[
           Text(kategorija["naziv"]),
           Wrap(

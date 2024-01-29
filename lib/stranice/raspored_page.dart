@@ -19,6 +19,7 @@ class _RasporedPageState extends State<RasporedPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         leading: GestureDetector(
           onTap: () {
