@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:skolarac/model/korisnik.dart';
 import 'package:skolarac/stranice/glavna_strana.dart';
 import 'package:skolarac/stranice/napravi_racun.dart';
-import 'package:skolarac/stranice/predmeti.dart';
+import 'package:skolarac/stranice/menu.dart';
 import 'package:skolarac/stranice/profil.dart';
 
 class HomePage extends StatefulWidget {
@@ -46,7 +46,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           return Scaffold(
               body: TabBarView(
                 controller: _tabController,
-                children: const [PredmetiPage(), GlavnaStrana(), ProfilePage()],
+                children: const [MenuPage(), GlavnaStrana(), ProfilePage()],
               ),
               bottomNavigationBar: TabBar(
                 controller: _tabController,

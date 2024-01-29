@@ -15,12 +15,10 @@ class SkolaracDugme extends StatelessWidget {
           child: Text(text),
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all<Color>(
-                Theme.of(context).primaryColor),
-            foregroundColor:
-            MaterialStateProperty.all<Color>(Colors.white),
-            textStyle: MaterialStateProperty.all<TextStyle>(Theme.of(context).textTheme.headline6!.copyWith(
-
-                color: Colors.white)),
+                Theme.of(context).colorScheme.primary),
+            foregroundColor: MaterialStateProperty.all<Color>(
+                Theme.of(context).colorScheme.onPrimary),
+            textStyle: MaterialStateProperty.all<TextStyle>(Theme.of(context).textTheme.headline6!),
             padding: MaterialStateProperty.all<EdgeInsets>(
                 EdgeInsets.all(12)),
           )),

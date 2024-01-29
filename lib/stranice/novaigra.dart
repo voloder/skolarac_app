@@ -33,7 +33,7 @@ class _NovaIgraState extends State<NovaIgra> {
           children: [
             SkolaracDugme(
               onPressed: () {
-                Backend().instance.kreirajSobu(context, postavke).then((s) {
+                Backend().instance.kreirajSobu(context).then((s) {
                   // provider za sobu, tako da kada dodje do socket eventa, da se
                   // widget tree rebuilduje i da se prikaze novo stanje sobe
                   Navigator.push(
@@ -41,8 +41,9 @@ class _NovaIgraState extends State<NovaIgra> {
                       MaterialPageRoute(
                           builder: (context) => ChangeNotifierProvider(
                                 create: (context) => s,
-                                child: const SobaPage(
+                                child: SobaPage(
                                   novaIgra: true,
+                                  postakve: postavke,
                                 ),
                               )));
                 });
@@ -135,8 +136,8 @@ class _NovaIgraState extends State<NovaIgra> {
         }
       }
     }
-    if(maxPitanja > 50) {
-      maxPitanja = 50;
+    if(maxPitanja > 25) {
+      maxPitanja = 25;
     }
     if(postavke.brojPitanja > maxPitanja) {
       postavke.brojPitanja = maxPitanja;

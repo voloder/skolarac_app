@@ -26,19 +26,23 @@ class _UrediProfilState extends State<UrediProfil> {
   Widget build(BuildContext context) {
     Korisnik korisnik = Provider.of<Korisnik>(context);
     return Scaffold(
-      backgroundColor: Color(0xFFf6f6f9),
       appBar: AppBar(
-        title: Text("Uredi profil"),
+        leading: GestureDetector(
+            onTap: () {
+              Navigator.of(context).pop();
+            },
+            child: Icon(Icons.chevron_left, size: 40)),
+        backgroundColor: Theme.of(context).colorScheme.background,
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Spacer(),
+          Spacer(flex: 2),
           Hero(
             tag: "profil",
             child: Image.asset(
               "assets/avatari/${korisnik.avatar}.png",
-              height: 150,
+              height: 125,
             ),
           ),
           Hero(
@@ -61,28 +65,32 @@ class _UrediProfilState extends State<UrediProfil> {
             ),
           ),
           Spacer(),
-          Text(
-            "AVATAR",
-            style: TextStyle(fontSize: 25),
-            textAlign: TextAlign.start,
-          ),
           DefaultTabController(
             length: 2,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                TabBar(
+                const TabBar(
                   tabs: [
                     Tab(
-                      text: "ŽENSKI",
+                      child: Text(
+                        "ŽENSKI",
+                        style:
+                            TextStyle(color: Color(0xFFA53D8E), fontSize: 20),
+                      ),
                     ),
                     Tab(
-                      text: "MUŠKI",
+                      child: Text(
+                        "MUŠKI",
+                        style:
+                            TextStyle(color: Color(0xFF0080C8), fontSize: 20),
+                      ),
                     ),
                   ],
                 ),
-                SizedBox(
-                  height: 60,
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  height: 80,
                   child: TabBarView(
                     children: List.generate(2, (spol) {
                       return Row(

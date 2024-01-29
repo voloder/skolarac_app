@@ -31,6 +31,4 @@ class SobaPostavke {
      vrijemeOtkrivanja: json["vrijeme_otkrivanja"]
    );
  }
-
-
 }

@@ -10,11 +10,11 @@ import 'package:http/http.dart' as http;
 import 'package:socket_io_client/socket_io_client.dart';
 
 class Backend {
-  //static String host = "localhost:8000";
-  //static String socketUrl = "http://localhost:8000/";
+  static String host = "localhost:8000";
+  static String socketUrl = "http://localhost:8000/";
 
-  static String host = "xudev.io:8000";
-  static String socketUrl = "http://xudev.io:8000/";
+  //static String host = "xudev.io:8000";
+  //static String socketUrl = "http://xudev.io:8000/";
 
   static Backend? _instance;
 
@@ -75,14 +75,13 @@ class Backend {
     socket.emit("odabir_${soba.kod}", {"odgovor": odgovor, "igrac": korisnik.toJson()});
   }
 
-  Future<Soba> kreirajSobu(BuildContext context, SobaPostavke postavke) async {
+  Future<Soba> kreirajSobu(BuildContext context) async {
     korisnik = Provider.of<Korisnik>(context, listen: false);
-    print(jsonEncode(postavke.toJson(),));
+
     http.Response resp = await http.post(Uri.http(host, "sobe/kreiraj/"),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(postavke.toJson(),));
+        },);
 
     if (resp.statusCode != 200) {
       throw Exception("Greška pri kreiranju sobe");
@@ -97,12 +96,16 @@ class Backend {
     return soba;
   }
 
-  Future<void> kreniIgru(Soba soba) async {
+  Future<void> kreniIgru(Soba soba, SobaPostavke postavke) async {
     Map<String, dynamic> parametri = {
       "kod": soba.kod
     };
 
-    http.Response resp = await http.post(Uri.http(host, "sobe/zapocni/", parametri));
+    http.Response resp = await http.post(Uri.http(host, "sobe/zapocni/", parametri),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(postavke.toJson()));
 
     if (resp.statusCode != 200) {
       throw Exception("Greška pri kretanju");

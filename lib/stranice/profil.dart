@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:skolarac/dialozi/boja_dialog.dart';
 import 'package:skolarac/dialozi/jezik_dialog.dart';
 import 'package:skolarac/model/korisnik.dart';
 import 'package:skolarac/stranice/uredi_profil.dart';
@@ -17,7 +18,6 @@ class _ProfilePageState extends State<ProfilePage> {
     Korisnik korisnik = Provider.of<Korisnik>(context);
     return Scaffold(
       //appBar: AppBar(title: const Text('Profil')),
-      backgroundColor: Color(0xFFf6f6f9),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -43,10 +43,10 @@ class _ProfilePageState extends State<ProfilePage> {
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.onInverseSurface,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.grey.withOpacity(0.3),
+                    color: Colors.black.withOpacity(0.1),
                     spreadRadius: 0,
                     blurRadius: 8,
                     offset: Offset(3, 3), // changes position of shadow
@@ -57,7 +57,6 @@ class _ProfilePageState extends State<ProfilePage> {
                 title: Text('PROFIL',
                     style: TextStyle(fontSize: 25, fontFamily: "RoadRage")),
                 leading: Icon(Icons.edit_rounded),
-                tileColor: Colors.white,
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => const UrediProfil()));
@@ -70,10 +69,10 @@ class _ProfilePageState extends State<ProfilePage> {
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.onInverseSurface,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.grey.withOpacity(0.3),
+                    color: Colors.black.withOpacity(0.1),
                     spreadRadius: 0,
                     blurRadius: 8,
                     offset: Offset(3, 3), // changes position of shadow
@@ -87,8 +86,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   },
                   title: Text('JEZIK',
                       style: TextStyle(fontSize: 25, fontFamily: "RoadRage")),
-                  leading: Icon(Icons.language_rounded),
-                  tileColor: Colors.white),
+                  leading: Icon(Icons.language_rounded),),
             ),
           ),
           Padding(
@@ -96,10 +94,10 @@ class _ProfilePageState extends State<ProfilePage> {
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.onInverseSurface,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.grey.withOpacity(0.3),
+                    color: Colors.black.withOpacity(0.1),
                     spreadRadius: 0,
                     blurRadius: 8,
                     offset: Offset(3, 3), // changes position of shadow
@@ -107,11 +105,12 @@ class _ProfilePageState extends State<ProfilePage> {
                 ],
               ),
               child: ListTile(
-                  onTap: () {},
+                  onTap: () {
+                    showDialog(context: context, builder:(context) => BojaDialog());
+                  },
                   title: Text('BOJA',
                       style: TextStyle(fontSize: 25, fontFamily: "RoadRage")),
-                  leading: Icon(Icons.color_lens_rounded),
-                  tileColor: Colors.white),
+                  leading: Icon(Icons.color_lens_rounded),),
             ),
           ),
           Spacer(),

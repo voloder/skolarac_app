@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:gif/gif.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:skolarac/backend.dart';
 import 'package:skolarac/model/korisnik.dart';
 import 'package:skolarac/stranice/novaigra.dart';
 import 'package:skolarac/stranice/pridruzise.dart';
 import 'package:skolarac/stranice/soba_page.dart';
+import 'package:skolarac/widgeti/gradient_dugme.dart';
 
 class GlavnaStrana extends StatefulWidget {
   const GlavnaStrana({super.key});
@@ -18,124 +19,44 @@ class _GlavnaStranaState extends State<GlavnaStrana>
     with TickerProviderStateMixin {
   TextEditingController _controller = TextEditingController();
 
-  late GifController _gifController = GifController(vsync: this);
-
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Spacer(),
-        GestureDetector(
-          onTap: () {
+        GradientDugme(
+          // nova igra
+          boja1: Color(0xFF92E3A9),
+          boja2: Color(0xFF2B8854),
+          naslov: "NOVA IGRA",
+          slika: "assets/slike/novaigra.png",
+          onPressed: () {
             Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) => const NovaIgra()));
           },
-          child: Container(
-            margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            height: 140,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Color(0xFF92E3A9),
-                    Color(0xFF2B8854),
-                  ],
-                )),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Flexible(
-                  child: Padding(
-                    padding: EdgeInsets.only(top: 10, left: 25),
-                    child: Hero(
-                      tag: "novaigra_naslov",
-                      child: Text("NOVA IGRA",
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline6!
-                              .copyWith(color: Colors.white)),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 8, bottom: 8, right: 30),
-                  child: Hero(
-                      tag: "novaigra",
-                      child: Image.asset("assets/slike/novaigra.png")),
-                )
-              ],
-            ),
-          ),
+          naslovHero: "novaigra_naslov",
+          slikaHero: "novaigra",
+
         ),
-        GestureDetector(
-          onTap: () {
+        GradientDugme(
+          boja1: Color(0xFF263238),
+          boja2: Color(0xFF00BEBE),
+          naslov: "PRIDRUŽI SE",
+          slika: "assets/slike/pridruzise.png",
+          onPressed: () {
             Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) => const PridruziSe()));
           },
-          child: Container(
-            margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            height: 140,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Color(0xFF263238),
-                    Color(0xFF00BEBE),
-                  ],
-                )),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Flexible(
-                  child: Padding(
-                    padding: EdgeInsets.only(top: 10, left: 25),
-                    child: Hero(
-                      tag: "pridruzise_naslov",
-                      child: Text("PRIDRUŽI SE",
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline6!
-                              .copyWith(color: Colors.white)),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 8, bottom: 8, right: 30),
-                  child: Hero(
-                      tag: "pridruzise",
-                      child: Image.asset("assets/slike/pridruzise.png")),
-                )
-              ],
-            ),
-          ),
+          naslovHero: "pridruzise_naslov",
+          slikaHero: "pridruzise",
         ),
         Expanded(
           flex: 2,
-          child: Gif(
-            image: AssetImage("assets/slike/animacija.gif"),
-            controller:
-                _gifController, // if duration and fps is null, original gif fps will be used.
-            autostart: Autostart.no,
-            onFetchCompleted: () {
-              _gifController.reset();
-              _gifController.forward();
-            },
-          ),
+          child: Lottie.asset('assets/animacije/kviz.json', repeat: false),
+
         )
       ],
     );
-  }
-
-  @override
-  void dispose() {
-    _gifController.dispose();
-    super.dispose();
   }
 }
