@@ -27,7 +27,10 @@ class _GlavnaStranaState extends State<GlavnaStrana>
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Expanded(child:
-          Image.asset("assets/slike/banner_${Provider.of<Tema>(context).getBrightness() == Brightness.light ? "dark" : "light"}.png")
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Image.asset("assets/slike/banner_${Provider.of<Tema>(context).getBrightness() == Brightness.light ? "dark" : "light"}.png"),
+          )
           ),
           GradientDugme(
             // nova igra
